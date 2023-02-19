@@ -14,59 +14,142 @@ function BPUnitValToColorRange(unitValue) {
   return ((unitValue + 1) / 2) * 255;
 }
 
-function checkRouting() {
-  //TODO: Have this iterate over a list of routing instead of having to do it all explicitly
-  if (osc1RouteToRedCheckbox.checked) { osc1RouteToRed = 1; } else { osc1RouteToRed = 0; }
-  if (osc2RouteToRedCheckbox.checked) { osc2RouteToRed = 1; } else { osc2RouteToRed = 0; }
-  if (osc3RouteToRedCheckbox.checked) { osc3RouteToRed = 1; } else { osc3RouteToRed = 0; }
-  if (osc1RouteToGreenCheckbox.checked) { osc1RouteToGreen = 1; } else { osc1RouteToGreen = 0; }
-  if (osc2RouteToGreenCheckbox.checked) { osc2RouteToGreen = 1; } else { osc2RouteToGreen = 0; }
-  if (osc3RouteToGreenCheckbox.checked) { osc3RouteToGreen = 1; } else { osc3RouteToGreen = 0; }
-  if (osc1RouteToBlueCheckbox.checked) { osc1RouteToBlue = 1; } else { osc1RouteToBlue = 0; }
-  if (osc2RouteToBlueCheckbox.checked) { osc2RouteToBlue = 1; } else { osc2RouteToBlue = 0; }
-  if (osc3RouteToBlueCheckbox.checked) { osc3RouteToBlue = 1; } else { osc3RouteToBlue = 0; }
+
+class OutputChannel {
+  constructor() {
+    this.sources = [];
+  }
+
+  addSource(source) {
+    this.sources.push(source);
+  }
+
+  removeSource(source) {
+    //TODO: How to implement??
+  }
+
+  // this simply adds all the sources
+  raw() {
+    return sources.reduce((sum, current) => sum + current.val(), 0);
+  }
+
+  // convert the sum of the sources to be between 0 and 255
+  toByte() {
+    return (((this.raw()/this.sources.length) + 1) / 2) * 255;
+  }
+
 }
+
+
+class Oscillator {
+  constructor(syncType) {
+    // this.name = name; // invokes the setter
+    this.fmSources = [];
+    this.pmSources = [];
+    this.syncType = "";
+    this.setSync(syncType);
+    //TODO: set this.freqSlider, this.fmSlider, and this.pmSlider correctly somehow!
+    this.freqSlider = 1; //DEBUG FIXME
+    this.fmSlider = 0; //DEBUG FIXME
+    this.pmSlider = 0; //DEBUG FIXME
+  }
+
+  val() {
+  }
+
+  setSync(type) {
+    switch (type.toLowerCase()) {
+      case 'h':
+      case 'horizontal':
+        this.syncType = "horizontal";
+        this.val = () => -Math.cos(lineNorm * this.freqSlider);
+        break;
+      case 'v':
+      case 'vertical':
+        this.syncType = "vertical";
+        this.val = () => -Math.cos(columnNorm * this.freqSlider);
+        break;
+      case 'f':
+      case 'free':
+        this.syncType = "free";
+        this.val = () => -Math.cos(free * this.freqSlider);
+        // interesting slider values for use with free: 1.58, 3.13, 6.24
+        // They're all near powers of Pi (or powers of Pi/2) (or multiples of Pi or Pi/2?).
+        // As the power/multiple goes up, the useable deviation from that value grows.
+        // Around Pi, only deviations of up to +/-0.3 are interesting, but near 4*Pi you can go further.
+        // TODO: Can I make a function to use with the free osc that gives more control near the multiples/powers of Pi? I'm thinking maybe an arctan or something?
+        break;
+      case 'l':
+      case 'lfo':
+        this.syncType = "lfo";
+        //TODO: update the function too?
+        break;
+      default:
+        throw new SyntaxError("Invalid Oscillator sync type");
+    }
+  }
+
+  addFM(source) {
+    this.fmSources.push(source);
+  }
+
+  removeFM(source) {
+    //TODO: How to implement??
+  }
+
+  addPM(source) {
+    this.pmSources.push(source);
+  }
+
+  removePM(source) {
+    //TODO: How to implement??
+  }
+
+}
+
+
+class OscillatorUI {
+  constructor(baseName) {
+    //TODO: Check basename before setting and throw error if it's bad
+    this._baseName = baseName;
+    this.freqSlider = document.getElementById(`${this.baseName}FreqSlider`);
+    this.fmSlider =   document.getElementById(`${this.baseName}FMSlider`);
+    this.pmSlider =   document.getElementById(`${this.baseName}PMSlider`);
+
+    this.routeToRedCheckbox = document.getElementById(`${this.baseName}RouteToRed`);
+    this.routeToGreenCheckbox = document.getElementById(`${this.baseName}RouteToGreen`);
+    this.routeToBlueCheckbox = document.getElementById(`${this.baseName}RouteToBlue`);
+
+    this.routeToRed = 0; //TODO: This shouldn't be a UI property
+    this.routeToGreen = 0; //TODO: This shouldn't be a UI property
+    this.routeToBlue = 0; //TODO: This shouldn't be a UI property
+    this.routeToRedCheckbox.addEventListener('change', (event) => { this.checkRouting(); })
+    this.routeToGreenCheckbox.addEventListener('change', (event) => { this.checkRouting(); })
+    this.routeToBlueCheckbox.addEventListener('change', (event) => { this.checkRouting(); })
+    this.checkRouting();
+  }
+
+  //TODO: Since routeToRed, routeToGreen, and routeToBlue shouldn't be UI
+  // properties, this should change them where they're actually supposed to be
+  // (in other words, this function shouldn't be here, but with the oscillator obj or the routing obj
+  checkRouting() {
+    if (this.routeToRedCheckbox.checked) { this.routeToRed = 1; } else { this.routeToRed = 0; }
+    if (this.routeToGreenCheckbox.checked) { this.routeToGreen = 1; } else { this.routeToGreen = 0; }
+    if (this.routeToBlueCheckbox.checked) { this.routeToBlue = 1; } else { this.routeToBlue = 0; }
+  }
+
+  get baseName() {
+    return this._baseName;
+  }
+
+}
+
 
 const canvas = document.getElementById("screen");
 
-let osc1FreqSlider = document.getElementById('osc1FreqSlider');
-let osc1FMSlider =   document.getElementById('osc1FMSlider');
-let osc1PMSlider =   document.getElementById('osc1PMSlider');
-let osc1RouteToRedCheckbox = document.getElementById('osc1RouteToRed');
-let osc1RouteToRed;
-osc1RouteToRedCheckbox.addEventListener('change', (event) => { checkRouting(); })
-let osc1RouteToGreenCheckbox = document.getElementById('osc1RouteToGreen');
-let osc1RouteToGreen;
-osc1RouteToGreenCheckbox.addEventListener('change', (event) => { checkRouting(); })
-let osc1RouteToBlueCheckbox = document.getElementById('osc1RouteToBlue');
-let osc1RouteToBlue;
-osc1RouteToBlueCheckbox.addEventListener('change', (event) => { checkRouting(); })
-
-let osc2FreqSlider =   document.getElementById('osc2FreqSlider');
-let osc2FMSlider = document.getElementById('osc2FMSlider');
-let osc2PMSlider = document.getElementById('osc2PMSlider');
-let osc2RouteToRedCheckbox = document.getElementById('osc2RouteToRed');
-let osc2RouteToRed;
-osc2RouteToRedCheckbox.addEventListener('change', (event) => { checkRouting(); })
-let osc2RouteToGreenCheckbox = document.getElementById('osc2RouteToGreen');
-let osc2RouteToGreen;
-osc2RouteToGreenCheckbox.addEventListener('change', (event) => { checkRouting(); })
-let osc2RouteToBlueCheckbox = document.getElementById('osc2RouteToBlue');
-let osc2RouteToBlue;
-osc2RouteToBlueCheckbox.addEventListener('change', (event) => { checkRouting(); })
-
-let osc3FreqSlider =   document.getElementById('osc3FreqSlider');
-let osc3FMSlider = document.getElementById('osc3FMSlider');
-let osc3PMSlider = document.getElementById('osc3PMSlider');
-let osc3RouteToRedCheckbox = document.getElementById('osc3RouteToRed');
-let osc3RouteToRed;
-osc3RouteToRedCheckbox.addEventListener('change', (event) => { checkRouting(); })
-let osc3RouteToGreenCheckbox = document.getElementById('osc3RouteToGreen');
-let osc3RouteToGreen;
-osc3RouteToGreenCheckbox.addEventListener('change', (event) => { checkRouting(); })
-let osc3RouteToBlueCheckbox = document.getElementById('osc3RouteToBlue');
-let osc3RouteToBlue;
-osc3RouteToBlueCheckbox.addEventListener('change', (event) => { checkRouting(); })
+let osc1ui = new OscillatorUI("osc1");
+let osc2ui = new OscillatorUI("osc2");
+let osc3ui = new OscillatorUI("osc3");
 
 let lfo1slider =   document.getElementById('lfo1slider');
 let lfo1AmpSlider = document.getElementById('lfo1AmpSlider');
@@ -112,12 +195,14 @@ function draw(elapsedTime) {
     // const ctx = canvas.getContext("2d");
     const ctx = canvas.getContext("2d", { alpha: false }); // no alpha makes it a little faster
 
-    osc1sliderVal = Number(osc1FreqSlider.value);
-    osc2sliderVal = Number(osc2FreqSlider.value);
-    osc3sliderVal = Number(osc3FreqSlider.value);
-    osc1PMSliderVal = Number(osc1PMSlider.value);
-    osc2PMSliderVal = Number(osc2PMSlider.value);
-    osc3PMSliderVal = Number(osc3PMSlider.value);
+    // osc1sliderVal = Number(osc1FreqSlider.value);
+    osc1sliderVal = Number(osc1ui.freqSlider.value);
+    osc2sliderVal = Number(osc2ui.freqSlider.value);
+    osc3sliderVal = Number(osc3ui.freqSlider.value);
+    // osc1PMSliderVal = Number(osc1PMSlider.value);
+    osc1PMSliderVal = Number(osc1ui.pmSlider.value);
+    osc2PMSliderVal = Number(osc2ui.pmSlider.value);
+    osc3PMSliderVal = Number(osc3ui.pmSlider.value);
     lfo1sliderVal = Number(lfo1slider.value);
     lfo1AmpSliderVal = Number(lfo1AmpSlider.value);
     lfo1 = -Math.cos(frameCount * lfo1sliderVal * 2 * Math.PI / 60) * lfo1AmpSliderVal; // lfo at 1 Hz
@@ -163,6 +248,7 @@ function draw(elapsedTime) {
 
       osc2primary = lineNorm;
       let osc2 = -Math.cos(osc2primary * (osc2sliderVal + osc2secondary));
+
       osc3primary = columnNorm;
       osc3tertiary = osc2;
       //let osc3 = -Math.cos(osc3primary * (osc3sliderVal + osc3secondary));
@@ -196,9 +282,12 @@ function draw(elapsedTime) {
       //let hOsc3 = -Math.cos(lineNorm * osc3sliderVal);
 
       // Fill the canvas
-      let red = ((osc1 * osc1RouteToRed) + (osc2 * osc2RouteToRed) + (osc3 * osc3RouteToRed))/(osc1RouteToRed + osc2RouteToRed + osc3RouteToRed);
-      let green = ((osc1 * osc1RouteToGreen) + (osc2 * osc2RouteToGreen) + (osc3 * osc3RouteToGreen))/(osc1RouteToGreen + osc2RouteToGreen + osc3RouteToGreen);
-      let blue = ((osc1 * osc1RouteToBlue) + (osc2 * osc2RouteToBlue) + (osc3 * osc3RouteToBlue))/(osc1RouteToBlue + osc2RouteToBlue + osc3RouteToBlue);
+      // let red = ((osc1 * osc1RouteToRed) + (osc2 * osc2RouteToRed) + (osc3 * osc3RouteToRed))/(osc1RouteToRed + osc2RouteToRed + osc3RouteToRed);
+      let red = ((osc1 * osc1ui.routeToRed) + (osc2 * osc2ui.routeToRed) + (osc3 * osc3ui.routeToRed))/(osc1ui.routeToRed + osc2ui.routeToRed + osc3ui.routeToRed);
+      // let green = ((osc1 * osc1RouteToGreen) + (osc2 * osc2RouteToGreen) + (osc3 * osc3RouteToGreen))/(osc1RouteToGreen + osc2RouteToGreen + osc3RouteToGreen);
+      let green = ((osc1 * osc1ui.routeToGreen) + (osc2 * osc2ui.routeToGreen) + (osc3 * osc3ui.routeToGreen))/(osc1ui.routeToGreen + osc2ui.routeToGreen + osc3ui.routeToGreen);
+      // let blue = ((osc1 * osc1RouteToBlue) + (osc2 * osc2RouteToBlue) + (osc3 * osc3RouteToBlue))/(osc1RouteToBlue + osc2RouteToBlue + osc3RouteToBlue);
+      let blue = ((osc1 * osc1ui.routeToBlue) + (osc2 * osc2ui.routeToBlue) + (osc3 * osc3ui.routeToBlue))/(osc1ui.routeToBlue + osc2ui.routeToBlue + osc3ui.routeToBlue);
       //sBuffer[index+0] = BPUnitValToColorRange(vOsc1); // red
       //sBuffer[index+0] = BPUnitValToColorRange(vOsc1fm); // red
       //sBuffer[index+0] = BPUnitValToColorRange(osc1); // red
@@ -222,7 +311,7 @@ function draw(elapsedTime) {
 }
 
 //draw(); // calls it once
-checkRouting();
+// checkRouting();
 window.requestAnimationFrame(draw);
 //window.requestAnimationFrame(draw); // calls it every frame (note: same line should be uncommented in draw() also!
 //let nIntervId = setInterval(draw, 100); // calls it every specified interval
