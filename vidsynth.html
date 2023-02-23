@@ -2,56 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>joem JS Vid Synth</title>
+  <title>joem JS Vid Synth (still under development)</title>
   <link href="vidsynth.css" rel="stylesheet">
 </head>
 <body>
-  <h1>joem JS Vid Synth</h1>
-  <h2>(still under development)</h2>
-
-  <p id="controls">
-  <fieldset>
-    <legend>Controls</legend>
-    <table id="controls-table">
-      <thead>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th colspan="9">Routing</th>
-        </tr>
-        <tr>
-          <th></th>
-          <th>Freq.</th>
-          <th>FM</th>
-          <th>Phase</th>
-          <th>PM</th>
-          <th>Sync</th>
-          <th>R</th>
-          <th>G</th>
-          <th>B</th>
-          <th>O1FM</th>
-          <th>O1PM</th>
-          <th>O2FM</th>
-          <th>O2PM</th>
-          <th>O3FM</th>
-          <th>O3PM</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- controls will be added here to the tbody programatically -->
-      </tbody>
-    </table>
-  </fieldset>
-  </p>
 
   <div id="container">
       <div>
         <canvas id="screen" width="400" height="300" ></canvas>
       </div>
+  </div>
+
+  <div id="ui">
+    <p>joem JS Vid Synth (still under development)</p>
+
+    <p id="controls">
+    <fieldset>
+      <legend>Controls</legend>
+      <table id="controls-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th colspan="9">Routing</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>Freq.</th>
+            <th>FM</th>
+            <th>Phase</th>
+            <th>PM</th>
+            <th>Sync</th>
+            <th>R</th>
+            <th>G</th>
+            <th>B</th>
+            <th>O1FM</th>
+            <th>O1PM</th>
+            <th>O2FM</th>
+            <th>O2PM</th>
+            <th>O3FM</th>
+            <th>O3PM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- controls will be added here to the tbody programatically -->
+        </tbody>
+      </table>
+    </fieldset>
+    </p>
+
   </div>
 
   <script src="vidsynth.js"></script>
