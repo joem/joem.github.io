@@ -1,0 +1,39 @@
+#screen {
+  /* background-color: black; */
+  background-color: white;
+  border: 1px solid black;
+}
+
+#container {
+  border: 1px solid black;
+  background: white;
+  display: inline-block;
+  border-radius: 0.25rem;
+  padding: 1rem;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid gray;
+  padding: 4px 6px;
+}
+
+fieldset {
+  display: inline-block;
+}
+
+.radio label {
+  margin-right: 5px;
+  margin-left: -3px;
+}
+
+td {
+  text-align: center;
+}
+
+.radio.disabled {
+  color: lightgray;
+}
