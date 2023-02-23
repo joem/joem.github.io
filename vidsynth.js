@@ -14,18 +14,26 @@ function BPUnitValToColorRange(unitValue) {
   return ((unitValue + 1) / 2) * 255;
 }
 
+// not sure if we need this
+function sineToSquare(sineIn) {
+  if(sineIn > 0) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
 
 class OutputChannel {
   constructor() {
-    this.sources = [];
+    this.sources = new Set();
   }
 
   addSource(source) {
-    this.sources.push(source);
+    this.sources.add(source);
   }
 
   removeSource(source) {
-    //TODO: How to implement??
+    this.sources.delete(source);
   }
 
   // this simply adds all the sources
@@ -42,19 +50,53 @@ class OutputChannel {
 
 
 class Oscillator {
-  constructor(syncType) {
+  constructor(waveType, syncType, uiName) {
     // this.name = name; // invokes the setter
-    this.fmSources = [];
-    this.pmSources = [];
+    this.fmSources = new Set();
+    this.pmSources = new Set();
+    this.waveType = "";
+    this.setWave(waveType);
     this.syncType = "";
     this.setSync(syncType);
     //TODO: set this.freqSlider, this.fmSlider, and this.pmSlider correctly somehow!
-    this.freqSlider = 1; //DEBUG FIXME
-    this.fmSlider = 0; //DEBUG FIXME
-    this.pmSlider = 0; //DEBUG FIXME
+    this.freqSliderVal = 1; //DEBUG FIXME
+    this.fmSliderVal = 0; //DEBUG FIXME
+    this.pmSliderVal = 0; //DEBUG FIXME
+    this.primary = 0;
+    this.secondary = 0;
+    this.tertiary = 0;
+    this.ui = new OscillatorUI(uiName);
   }
 
-  val() {
+  updateFromUI() {
+    this.freqSliderVal = Number(this.ui.freqSlider.value);
+    this.fmSliderVal = Number(this.ui.fmSlider.value);
+    this.pmSliderVal = Number(this.ui.pmSlider.value);
+    this.routeToRedCheckbox = document.getElementById(`${this.baseName}-route-to-red`);
+    this.routeToGreenCheckbox = document.getElementById(`${this.baseName}-route-to-green`);
+    this.routeToBlueCheckbox = document.getElementById(`${this.baseName}-route-to-blue`);
+  }
+
+  // val() {
+  // }
+
+  setWave(type) {
+    switch (type.toLowerCase()) {
+      case 'sine':
+        this.waveType = "sine";
+        this.val = () => -Math.cos(this.primary * (this.freqSliderVal + this.secondary) + (this.tertiary * this.pmSliderVal));
+        break;
+      case 'triangle':
+        this.waveType = "triangle";
+        this.val = () => 2 / Math.PI * Math.asin(Math.sin(2 * Math.PI * this.primary * this.freqSliderVal / 9));
+        break;
+      case 'square':
+        this.waveType = "square";
+        this.val = () => Math.sign(-Math.cos(this.primary * (this.freqSliderVal + this.secondary) + (this.tertiary * this.pmSliderVal)));
+        break;
+      default:
+        throw new SyntaxError("Invalid Oscillator wave type");
+    }
   }
 
   setSync(type) {
@@ -62,17 +104,23 @@ class Oscillator {
       case 'h':
       case 'horizontal':
         this.syncType = "horizontal";
-        this.val = () => -Math.cos(lineNorm * this.freqSlider);
+        // this.val = () => -Math.cos(lineNorm * this.freqSliderVal);
+        this.primary = () => lineNorm;
+        // this.primary = lineNorm;
         break;
       case 'v':
       case 'vertical':
         this.syncType = "vertical";
-        this.val = () => -Math.cos(columnNorm * this.freqSlider);
+        // this.val = () => -Math.cos(columnNorm * this.freqSliderVal);
+        this.primary = () => columnNorm;
+        // this.primary = columnNorm;
         break;
       case 'f':
       case 'free':
         this.syncType = "free";
-        this.val = () => -Math.cos(free * this.freqSlider);
+        // this.val = () => -Math.cos(free * this.freqSliderVal);
+        this.primary = () => free;
+        // this.primary = free;
         // interesting slider values for use with free: 1.58, 3.13, 6.24
         // They're all near powers of Pi (or powers of Pi/2) (or multiples of Pi or Pi/2?).
         // As the power/multiple goes up, the useable deviation from that value grows.
@@ -90,19 +138,19 @@ class Oscillator {
   }
 
   addFM(source) {
-    this.fmSources.push(source);
+    this.fmSources.add(source);
   }
 
   removeFM(source) {
-    //TODO: How to implement??
+    this.fmSources.delete(source);
   }
 
   addPM(source) {
-    this.pmSources.push(source);
+    this.pmSources.add(source);
   }
 
   removePM(source) {
-    //TODO: How to implement??
+    this.pmSources.delete(source);
   }
 
 }
@@ -112,13 +160,14 @@ class OscillatorUI {
   constructor(baseName) {
     //TODO: Check basename before setting and throw error if it's bad
     this._baseName = baseName;
-    this.freqSlider = document.getElementById(`${this.baseName}FreqSlider`);
-    this.fmSlider =   document.getElementById(`${this.baseName}FMSlider`);
-    this.pmSlider =   document.getElementById(`${this.baseName}PMSlider`);
+    // this.freqSlider = document.getElementById(`${this.baseName}FreqSlider`);
+    this.freqSlider = document.getElementById(`${this.baseName}-freq-slider`);
+    this.fmSlider =   document.getElementById(`${this.baseName}-fm-slider`);
+    this.pmSlider =   document.getElementById(`${this.baseName}-pm-slider`);
 
-    this.routeToRedCheckbox = document.getElementById(`${this.baseName}RouteToRed`);
-    this.routeToGreenCheckbox = document.getElementById(`${this.baseName}RouteToGreen`);
-    this.routeToBlueCheckbox = document.getElementById(`${this.baseName}RouteToBlue`);
+    this.routeToRedCheckbox = document.getElementById(`${this.baseName}-route-to-red`);
+    this.routeToGreenCheckbox = document.getElementById(`${this.baseName}-route-to-green`);
+    this.routeToBlueCheckbox = document.getElementById(`${this.baseName}-route-to-blue`);
 
     this.routeToRed = 0; //TODO: This shouldn't be a UI property
     this.routeToGreen = 0; //TODO: This shouldn't be a UI property
@@ -151,8 +200,8 @@ let osc1ui = new OscillatorUI("osc1");
 let osc2ui = new OscillatorUI("osc2");
 let osc3ui = new OscillatorUI("osc3");
 
-let lfo1slider =   document.getElementById('lfo1slider');
-let lfo1AmpSlider = document.getElementById('lfo1AmpSlider');
+let lfo1slider =   document.getElementById('lfo1-freq-slider');
+let lfo1AmpSlider = document.getElementById('lfo1-amp-slider');
 let osc1sliderVal;
 let osc2sliderVal;
 let osc3sliderVal;
@@ -173,6 +222,14 @@ let osc2secondary = 0;
 let osc3primary = 0;
 let osc3secondary = 0;
 let osc3tertiary = 0;
+
+
+// let osc4 = new Oscillator("sine", "horizontal");
+// let osc1 = new Oscillator("sine", "horizontal");
+
+let osc1 = () => -Math.cos(osc1primary * (osc1sliderVal + osc1secondary));
+// let osc1 = {};
+// let osc1.val = () => -Math.cos(osc1primary * (osc1sliderVal + osc1secondary));
 
 //function draw() {
 function draw(elapsedTime) {
@@ -244,10 +301,16 @@ function draw(elapsedTime) {
 
       osc1primary = columnNorm;
       osc1secondary = lfo1;
-      let osc1 = -Math.cos(osc1primary * (osc1sliderVal + osc1secondary));
+      // let osc1 = -Math.cos(osc1primary * (osc1sliderVal + osc1secondary));
+      // this.val = () => -Math.cos(this.primary * (this.freqSlider + this.secondary) + (this.tertiary * osc3PMSliderVal));
+      // let osc1 = () => -Math.cos(osc1primary * (osc1sliderVal + osc1secondary));
 
       osc2primary = lineNorm;
-      let osc2 = -Math.cos(osc2primary * (osc2sliderVal + osc2secondary));
+      // let osc2 = -Math.cos(osc2primary * (osc2sliderVal + osc2secondary));
+      // p = 9 is pretty good, I guess
+      // let osc2 = 2/Math.PI * Math.asin(Math.sin(2*Math.PI*osc2primary*osc2sliderVal/p));
+      // Triangle wave!
+      let osc2 = 2 / Math.PI * Math.asin(Math.sin(2 * Math.PI * osc2primary * osc2sliderVal / 9));
 
       osc3primary = columnNorm;
       osc3tertiary = osc2;
@@ -283,11 +346,9 @@ function draw(elapsedTime) {
 
       // Fill the canvas
       // let red = ((osc1 * osc1RouteToRed) + (osc2 * osc2RouteToRed) + (osc3 * osc3RouteToRed))/(osc1RouteToRed + osc2RouteToRed + osc3RouteToRed);
-      let red = ((osc1 * osc1ui.routeToRed) + (osc2 * osc2ui.routeToRed) + (osc3 * osc3ui.routeToRed))/(osc1ui.routeToRed + osc2ui.routeToRed + osc3ui.routeToRed);
-      // let green = ((osc1 * osc1RouteToGreen) + (osc2 * osc2RouteToGreen) + (osc3 * osc3RouteToGreen))/(osc1RouteToGreen + osc2RouteToGreen + osc3RouteToGreen);
-      let green = ((osc1 * osc1ui.routeToGreen) + (osc2 * osc2ui.routeToGreen) + (osc3 * osc3ui.routeToGreen))/(osc1ui.routeToGreen + osc2ui.routeToGreen + osc3ui.routeToGreen);
-      // let blue = ((osc1 * osc1RouteToBlue) + (osc2 * osc2RouteToBlue) + (osc3 * osc3RouteToBlue))/(osc1RouteToBlue + osc2RouteToBlue + osc3RouteToBlue);
-      let blue = ((osc1 * osc1ui.routeToBlue) + (osc2 * osc2ui.routeToBlue) + (osc3 * osc3ui.routeToBlue))/(osc1ui.routeToBlue + osc2ui.routeToBlue + osc3ui.routeToBlue);
+      let red = ((osc1() * osc1ui.routeToRed) + (osc2 * osc2ui.routeToRed) + (osc3 * osc3ui.routeToRed))/(osc1ui.routeToRed + osc2ui.routeToRed + osc3ui.routeToRed);
+      let green = ((osc1() * osc1ui.routeToGreen) + (osc2 * osc2ui.routeToGreen) + (osc3 * osc3ui.routeToGreen))/(osc1ui.routeToGreen + osc2ui.routeToGreen + osc3ui.routeToGreen);
+      let blue = ((osc1() * osc1ui.routeToBlue) + (osc2 * osc2ui.routeToBlue) + (osc3 * osc3ui.routeToBlue))/(osc1ui.routeToBlue + osc2ui.routeToBlue + osc3ui.routeToBlue);
       //sBuffer[index+0] = BPUnitValToColorRange(vOsc1); // red
       //sBuffer[index+0] = BPUnitValToColorRange(vOsc1fm); // red
       //sBuffer[index+0] = BPUnitValToColorRange(osc1); // red

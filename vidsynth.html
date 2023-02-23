@@ -77,10 +77,10 @@ td {
       <tbody>
         <tr>
           <th>Oscillator 1</th>
-          <td><input id="osc1FreqSlider" type="range" min="1" max="30" step="0.01" value="12.45"></td>
-          <td><input id="osc1FMSlider" type="range" min="-4" max="4" step="0.01" value="0"></td>
+          <td><input id="osc1-freq-slider" type="range" min="1" max="30" step="0.01" value="12.45"></td>
+          <td><input id="osc1-fm-slider" type="range" min="-4" max="4" step="0.01" value="0"></td>
           <td>osc1phase</td>
-          <td><input id="osc1PMSlider" type="range" min="-4" max="4" step="0.01" value="0"></td>
+          <td><input id="osc1-pm-slider" type="range" min="-4" max="4" step="0.01" value="0"></td>
           <td>
             <div class="radio">
               <input type="radio" id="osc1syncChoice1" name="osc1sync" value="h" />
@@ -91,22 +91,22 @@ td {
               <label for="osc1syncChoice3">free</label>
             </div>
           </td>
-          <td><input type="checkbox" id="osc1RouteToRed"   name="osc1RouteToRed" checked></td>
-          <td><input type="checkbox" id="osc1RouteToGreen" name="osc1RouteToGreen"></td>
-          <td><input type="checkbox" id="osc1RouteToBlue"  name="osc1RouteToBlue"></td>
-          <td> <!-- <input type="checkbox" id="osc1RouteToOsc1FM" name="osc1RouteToOsc1FM" disabled> --> </td>
-          <td> <!-- <input type="checkbox" id="osc1RouteToOsc1PM" name="osc1RouteToOsc1PM" disabled> --> </td>
-          <td><input type="checkbox" id="osc1RouteToOsc2FM" name="osc1RouteToOsc2FM"></td>
-          <td><input type="checkbox" id="osc1RouteToOsc2PM" name="osc1RouteToOsc2PM"></td>
-          <td><input type="checkbox" id="osc1RouteToOsc3FM" name="osc1RouteToOsc3FM"></td>
-          <td><input type="checkbox" id="osc1RouteToOsc3PM" name="osc1RouteToOsc3PM"></td>
+          <td><input type="checkbox" id="osc1-route-to-red"   name="osc1-route-to-red" checked></td>
+          <td><input type="checkbox" id="osc1-route-to-green" name="osc1-route-to-green"></td>
+          <td><input type="checkbox" id="osc1-route-to-blue"  name="osc1-route-to-blue"></td>
+          <td> <!-- <input type="checkbox" id="osc1-route-to-osc1-fm" name="osc1-route-to-osc1-fm" disabled> --> </td>
+          <td> <!-- <input type="checkbox" id="osc1-route-to-osc1-pm" name="osc1-route-to-osc1-pm" disabled> --> </td>
+          <td><input type="checkbox" id="osc1-route-to-osc2-fm" name="osc1-route-to-osc2-fm"></td>
+          <td><input type="checkbox" id="osc1-route-to-osc2-pm" name="osc1-route-to-osc2-pm"></td>
+          <td><input type="checkbox" id="osc1-route-to-osc3-fm" name="osc1-route-to-osc3-fm"></td>
+          <td><input type="checkbox" id="osc1-route-to-osc3-pm" name="osc1-route-to-osc3-pm"></td>
         </tr>
         <tr>
           <th>Oscillator 2</th>
-          <td><input id="osc2FreqSlider" type="range" min="1" max="30" step="0.01" value="3.39"></td>
-          <td><input id="osc2FMSlider" type="range" min="-4" max="4" step="0.01" value="0"></td>
+          <td><input id="osc2-freq-slider" type="range" min="1" max="30" step="0.01" value="3.39"></td>
+          <td><input id="osc2-fm-slider" type="range" min="-4" max="4" step="0.01" value="0"></td>
           <td>osc2phase</td>
-          <td><input id="osc2PMSlider" type="range" min="-4" max="4" step="0.01" value="0"></td>
+          <td><input id="osc2-pm-slider" type="range" min="-4" max="4" step="0.01" value="0"></td>
           <td>
             <div class="radio">
               <input type="radio" id="osc2syncChoice1" name="osc2sync" value="h" />
@@ -117,22 +117,22 @@ td {
               <label for="osc2syncChoice3">free</label>
             </div>
           </td>
-          <td><input type="checkbox" id="osc2RouteToRed"    name="osc2RouteToRed"></td>
-          <td><input type="checkbox" id="osc2RouteToGreen"  name="osc2RouteToGreen" checked></td>
-          <td><input type="checkbox" id="osc2RouteToBlue"   name="osc2RouteToBlue"></td>
-          <td><input type="checkbox" id="osc2RouteToOsc1FM" name="osc2RouteToOsc1FM"></td>
-          <td><input type="checkbox" id="osc2RouteToOsc1PM" name="osc2RouteToOsc1PM"></td>
-          <td> <!-- <input type="checkbox" id="osc2RouteToOsc2FM" name="osc2RouteToOsc2FM" disabled> --> </td>
-          <td> <!-- <input type="checkbox" id="osc2RouteToOsc2PM" name="osc2RouteToOsc2PM" disabled> --> </td>
-          <td><input type="checkbox" id="osc2RouteToOsc3FM" name="osc2RouteToOsc3FM"></td>
-          <td><input type="checkbox" id="osc2RouteToOsc3PM" name="osc2RouteToOsc3PM" checked></td>
+          <td><input type="checkbox" id="osc2-route-to-red"    name="osc2-route-to-red"></td>
+          <td><input type="checkbox" id="osc2-route-to-green"  name="osc2-route-to-green" checked></td>
+          <td><input type="checkbox" id="osc2-route-to-blue"   name="osc2-route-to-blue"></td>
+          <td><input type="checkbox" id="osc2-route-to-osc1-fm" name="osc2-route-to-osc1-fm"></td>
+          <td><input type="checkbox" id="osc2-route-to-osc1-pm" name="osc2-route-to-osc1-pm"></td>
+          <td> <!-- <input type="checkbox" id="osc2-route-to-osc2-fm" name="osc2-route-to-osc2-fm" disabled> --> </td>
+          <td> <!-- <input type="checkbox" id="osc2-route-to-osc2-pm" name="osc2-route-to-osc2-pm" disabled> --> </td>
+          <td><input type="checkbox" id="osc2-route-to-osc3-fm" name="osc2-route-to-osc3-fm"></td>
+          <td><input type="checkbox" id="osc2-route-to-osc3-pm" name="osc2-route-to-osc3-pm" checked></td>
         </tr>
         <tr>
           <th>Oscillator 3</th>
-          <td><input id="osc3FreqSlider" type="range" min="1" max="30" step="0.01" value="7.53"></td>
-          <td><input id="osc3FMSlider" type="range" min="-4" max="4" step="0.01" value="0"></td>
+          <td><input id="osc3-freq-slider" type="range" min="1" max="30" step="0.01" value="7.53"></td>
+          <td><input id="osc3-fm-slider" type="range" min="-4" max="4" step="0.01" value="0"></td>
           <td>osc3phase</td>
-          <td><input id="osc3PMSlider" type="range" min="-4" max="4" step="0.01" value="0"></td>
+          <td><input id="osc3-pm-slider" type="range" min="-4" max="4" step="0.01" value="0"></td>
           <td>
             <div class="radio">
               <input type="radio" id="osc3syncChoice1" name="osc3sync" value="h" checked />
@@ -143,22 +143,15 @@ td {
               <label for="osc3syncChoice3">free</label>
             </div>
           </td>
-          <td><input type="checkbox" id="osc3RouteToRed"    name="osc3RouteToRed"></td>
-          <td><input type="checkbox" id="osc3RouteToGreen"  name="osc3RouteToGreen"></td>
-          <td><input type="checkbox" id="osc3RouteToBlue"   name="osc3RouteToBlue" checked></td>
-          <td><input type="checkbox" id="osc3RouteToOsc1FM" name="osc3RouteToOsc1FM"></td>
-          <td><input type="checkbox" id="osc3RouteToOsc1PM" name="osc3RouteToOsc1PM"></td>
-          <td><input type="checkbox" id="osc3RouteToOsc2FM" name="osc3RouteToOsc2FM"></td>
-          <td><input type="checkbox" id="osc3RouteToOsc2PM" name="osc3RouteToOsc2PM"></td>
-          <td> <!-- <input type="checkbox" id="osc3RouteToOsc3FM" name="osc3RouteToOsc3FM" disabled> --> </td>
-          <td> <!-- <input type="checkbox" id="osc3RouteToOsc3PM" name="osc3RouteToOsc3PM" disabled> --> </td>
-        </tr>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th colspan="3">Routing</th>
+          <td><input type="checkbox" id="osc3-route-to-red"    name="osc3-route-to-red"></td>
+          <td><input type="checkbox" id="osc3-route-to-green"  name="osc3-route-to-green"></td>
+          <td><input type="checkbox" id="osc3-route-to-blue"   name="osc3-route-to-blue" checked></td>
+          <td><input type="checkbox" id="osc3-route-to-osc1-fm" name="osc3-route-to-osc1-fm"></td>
+          <td><input type="checkbox" id="osc3-route-to-osc1-pm" name="osc3-route-to-osc1-pm"></td>
+          <td><input type="checkbox" id="osc3-route-to-osc2-fm" name="osc3-route-to-osc2-fm"></td>
+          <td><input type="checkbox" id="osc3-route-to-osc2-pm" name="osc3-route-to-osc2-pm"></td>
+          <td> <!-- <input type="checkbox" id="osc3-route-to-osc3-fm" name="osc3-route-to-osc3-fm" disabled> --> </td>
+          <td> <!-- <input type="checkbox" id="osc3-route-to-osc3-pm" name="osc3-route-to-osc3-pm" disabled> --> </td>
         </tr>
         <tr>
           <th></th>
@@ -170,23 +163,29 @@ td {
           <th>R</th>
           <th>G</th>
           <th>B</th>
-          <th>Osc1</th>
-          <th>Osc2</th>
-          <th>Osc3</th>
+          <th>O1FM</th>
+          <th>O1PM</th>
+          <th>O2FM</th>
+          <th>O2PM</th>
+          <th>O3FM</th>
+          <th>O3PM</th>
         </tr>
         <tr>
           <th>LFO 1</th>
-          <td><input id="lfo1slider" type="range" min="0.01" max="3" step="0.01" value="0.5"></td>
-          <td><input id="lfo1FMSlider" type="range" min="-4" max="4" step="0.01" value="0"></td>
+          <td><input id="lfo1-freq-slider" type="range" min="0.01" max="3" step="0.01" value="0.5"></td>
+          <td><input id="lfo1-fm-slider" type="range" min="-4" max="4" step="0.01" value="0"></td>
           <td>lfo1phase</td>
-          <td><input id="lfo1PMSlider" type="range" min="-4" max="4" step="0.01" value="0"></td>
-          <td><input id="lfo1AmpSlider" type="range" min="0.01" max="10" step="0.01" value="1"></td>
-          <td><input type="checkbox" id="lfo1routeToRed" name="lfo1routeToRed"></td>
-          <td><input type="checkbox" id="lfo1routeToGreen" name="lfo1routeToGreen"></td>
-          <td><input type="checkbox" id="lfo1routeToBlue" name="lfo1routeToBlue"></td>
-          <td><input type="checkbox" id="lfo1routeToOsc1FM" name="lfo1routeToOsc1FM"></td>
-          <td><input type="checkbox" id="lfo1routeToOsc2FM" name="lfo1routeToOsc2FM"></td>
-          <td><input type="checkbox" id="lfo1routeToOsc3FM" name="lfo1routeToOsc3FM"></td>
+          <td><input id="lfo1-pm-slider" type="range" min="-4" max="4" step="0.01" value="0"></td>
+          <td><input id="lfo1-amp-slider" type="range" min="0.01" max="10" step="0.01" value="1"></td>
+          <td><input type="checkbox" id="lfo1-route-To-Red" name="lfo1-route-To-Red"></td>
+          <td><input type="checkbox" id="lfo1-route-To-Green" name="lfo1-route-To-Green"></td>
+          <td><input type="checkbox" id="lfo1-route-To-Blue" name="lfo1-route-To-Blue"></td>
+          <td><input type="checkbox" id="lfo1-route-to-osc1-fm" name="lfo1-route-to-osc1-fm"></td>
+          <td><input type="checkbox" id="lfo1-route-to-osc1-pm" name="lfo1-route-to-osc1-pm"></td>
+          <td><input type="checkbox" id="lfo1-route-to-osc2-fm" name="lfo1-route-to-osc2-fm"></td>
+          <td><input type="checkbox" id="lfo1-route-to-osc2-pm" name="lfo1-route-to-osc2-pm"></td>
+          <td><input type="checkbox" id="lfo1-route-to-osc3-fm" name="lfo1-route-to-osc3-fm"</td>
+          <td><input type="checkbox" id="lfo1-route-to-osc3-pm" name="lfo1-route-to-osc3-pm"</td>
         </tr>
       </tbody>
     </table>
