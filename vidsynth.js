@@ -125,12 +125,15 @@ function addOscControls(oscName) {
 
   newCell = newRow.insertCell();
   newCell.appendChild(newCheckbox(oscName + "-route-to-red"));
+  newCell.classList.add("route-to-red");
 
   newCell = newRow.insertCell();
   newCell.appendChild(newCheckbox(oscName + "-route-to-green"));
+  newCell.classList.add("route-to-green");
 
   newCell = newRow.insertCell();
   newCell.appendChild(newCheckbox(oscName + "-route-to-blue"));
+  newCell.classList.add("route-to-blue");
 
   //TODO: Figure out how to make the rest of the routing
   //        It needs to be able to add columns when a new osc is added.

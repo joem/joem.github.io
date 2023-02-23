@@ -37,3 +37,13 @@ td {
 .radio.disabled {
   color: lightgray;
 }
+.route-to-red {
+  background: pink;
+}
+
+.route-to-green {
+  background: lightgreen;
+}
+.route-to-blue {
+  background: lightblue;
+}
