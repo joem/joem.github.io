@@ -31,6 +31,10 @@
   background: white;
 }
 
+#title {
+  margin: 8px;
+}
+
 body {
   margin: 0;
   padding: 0;
