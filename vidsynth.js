@@ -23,6 +23,120 @@ function sineToSquare(sineIn) {
   }
 }
 
+// TODO: Combine all these UI functions in a class maybe?
+// I want to be able to use shared variables among all of them
+//  (specifically the oscName one!!)
+// Can I have a class work like that for me?
+// function newSlider(name, min=1, max=10, step="0.1", val=2) {
+function newSlider(name, min=-4, max=4, step="0.1", val=0) {
+    let input = document.createElement("input");
+    input.type = "range";
+    //input.name = oscName + suffix;
+    input.name = name;
+    //input.id = oscName + suffix;
+    input.id = name;
+    input.min = min;
+    input.max = max;
+    input.step = step;
+    input.value = val;
+    return input
+}
+function newCheckbox(name) {
+    let input = document.createElement("input");
+    input.type = "checkbox";
+    input.name = name;
+    input.id = name;
+    return input
+}
+function newRadioInput(name, id, val) {
+  let input = document.createElement("input");
+  input.type = "radio";
+  input.id = id;
+  input.name = name;
+  input.value = val;
+  return input;
+}
+function newRadioLabel(htmlFor, text) {
+  let label = document.createElement("label");
+  // label.htmlFor = oscName + "syncChoice1";
+  label.htmlFor = htmlFor;
+  // newText = document.createTextNode("H");
+  newText = document.createTextNode(text);
+  label.appendChild(newText);
+  return label;
+}
+function newSyncRadio(oscName) {
+  let div = document.createElement('div');
+  div.classList.add("radio");
+  let input;
+  let label;
+
+  input = newRadioInput(oscName + "-sync", oscName + "-sync-choice-h", "h");
+  div.appendChild(input);
+  div.appendChild(document.createTextNode(" ")); // maybe just use CSS instead of this space?
+
+  label = newRadioLabel(oscName + "-sync-choice-h", "H");
+  div.appendChild(label);
+
+  input = newRadioInput(oscName + "-sync", oscName + "-sync-choice-v", "v");
+  div.appendChild(input);
+  div.appendChild(document.createTextNode(" ")); // maybe just use CSS instead of this space?
+
+  label = newRadioLabel(oscName + "-sync-choice-v", "V");
+  div.appendChild(label);
+
+  input = newRadioInput(oscName + "-sync", oscName + "-sync-choice-free", "free");
+  div.appendChild(input);
+  div.appendChild(document.createTextNode(" ")); // maybe just use CSS instead of this space?
+
+  label = newRadioLabel(oscName + "-sync-choice-free", "free");
+  div.appendChild(label);
+  return div;
+}
+function addOscControls(oscName) {
+  let tbodyRef = document.getElementById('controls-table').getElementsByTagName('tbody')[0];
+  let newRow = tbodyRef.insertRow();
+  newRow.id = oscName + "-controls";
+
+  let newCell;
+  let newText;
+
+  newCell = newRow.insertCell();
+  newText = document.createTextNode(oscName);
+  newCell.appendChild(newText);
+
+  newCell = newRow.insertCell();
+  newCell.appendChild(newSlider(oscName + "-freq-slider", 1, 30, "0.1", 5));
+
+  newCell = newRow.insertCell();
+  newCell.appendChild(newSlider(oscName + "-fm-slider"));
+
+  newCell = newRow.insertCell();
+  newText = document.createTextNode(oscName + "phase-slider");
+  newCell.appendChild(newText);
+
+  newCell = newRow.insertCell();
+  newCell.appendChild(newSlider(oscName + "-pm-slider"));
+
+  newCell = newRow.insertCell();
+  newCell.appendChild(newSyncRadio(oscName));
+
+  newCell = newRow.insertCell();
+  newCell.appendChild(newCheckbox(oscName + "-route-to-red"));
+
+  newCell = newRow.insertCell();
+  newCell.appendChild(newCheckbox(oscName + "-route-to-green"));
+
+  newCell = newRow.insertCell();
+  newCell.appendChild(newCheckbox(oscName + "-route-to-blue"));
+
+  //TODO: Figure out how to make the rest of the routing
+  //        It needs to be able to add columns when a new osc is added.
+  //        It needs to be able to remove columns when an osc is removed.
+  //        It needs to have nothing in the columns for itself.
+}
+
+
 class OutputChannel {
   constructor() {
     this.sources = new Set();
@@ -196,12 +310,30 @@ class OscillatorUI {
 
 const canvas = document.getElementById("screen");
 
+addOscControls("osc1");
+// set some nice defaults
+document.getElementById("osc1-freq-slider").value = "12.45";
+document.getElementById("osc1-sync-choice-h").checked = true;
+document.getElementById("osc1-route-to-red").checked = true;
+
+addOscControls("osc2");
+// set some nice defaults
+document.getElementById("osc2-freq-slider").value = "3.39";
+document.getElementById("osc2-sync-choice-v").checked = true;
+document.getElementById("osc2-route-to-green").checked = true;
+
+addOscControls("osc3");
+// set some nice defaults
+document.getElementById("osc3-freq-slider").value = "7.53";
+document.getElementById("osc3-sync-choice-h").checked = true;
+document.getElementById("osc3-route-to-blue").checked = true;
+
 let osc1ui = new OscillatorUI("osc1");
 let osc2ui = new OscillatorUI("osc2");
 let osc3ui = new OscillatorUI("osc3");
 
 let lfo1slider =   document.getElementById('lfo1-freq-slider');
-let lfo1AmpSlider = document.getElementById('lfo1-amp-slider');
+// let lfo1AmpSlider = document.getElementById('lfo1-amp-slider');
 let osc1sliderVal;
 let osc2sliderVal;
 let osc3sliderVal;
@@ -261,8 +393,9 @@ function draw(elapsedTime) {
     osc2PMSliderVal = Number(osc2ui.pmSlider.value);
     osc3PMSliderVal = Number(osc3ui.pmSlider.value);
     lfo1sliderVal = Number(lfo1slider.value);
-    lfo1AmpSliderVal = Number(lfo1AmpSlider.value);
-    lfo1 = -Math.cos(frameCount * lfo1sliderVal * 2 * Math.PI / 60) * lfo1AmpSliderVal; // lfo at 1 Hz
+    // lfo1AmpSliderVal = Number(lfo1AmpSlider.value);
+    // lfo1 = -Math.cos(frameCount * lfo1sliderVal * 2 * Math.PI / 60) * lfo1AmpSliderVal; // lfo at 1 Hz
+    lfo1 = -Math.cos(frameCount * lfo1sliderVal * 2 * Math.PI / 60); // lfo at 1 Hz
 
     imageData = ctx.getImageData(0, 0, WIDTH, HEIGHT);
     sBuffer = imageData.data;
