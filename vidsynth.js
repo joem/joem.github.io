@@ -68,6 +68,7 @@ function newRadioLabel(htmlFor, text) {
 function newSyncRadio(oscName) {
   let div = document.createElement('div');
   div.classList.add("radio");
+  div.id = oscName + "-sync";
   let input;
   let label;
 
@@ -101,9 +102,11 @@ function addOscControls(oscName) {
   let newCell;
   let newText;
 
-  newCell = newRow.insertCell();
-  newText = document.createTextNode(oscName);
-  newCell.appendChild(newText);
+  // This three-step process is needed for this first one because it's a `th` not a `td`.
+  // There is no `insertCell()` equivalent for `th`.
+  let th = document.createElement('th');
+  th.appendChild(document.createTextNode(oscName));
+  newRow.appendChild(th);
 
   newCell = newRow.insertCell();
   newCell.appendChild(newSlider(oscName + "-freq-slider", 1, 30, "0.1", 5));
@@ -112,8 +115,7 @@ function addOscControls(oscName) {
   newCell.appendChild(newSlider(oscName + "-fm-slider"));
 
   newCell = newRow.insertCell();
-  newText = document.createTextNode(oscName + "phase-slider");
-  newCell.appendChild(newText);
+  newCell.appendChild(document.createTextNode(oscName + "phase-slider"));
 
   newCell = newRow.insertCell();
   newCell.appendChild(newSlider(oscName + "-pm-slider"));
@@ -327,6 +329,20 @@ addOscControls("osc3");
 document.getElementById("osc3-freq-slider").value = "7.53";
 document.getElementById("osc3-sync-choice-h").checked = true;
 document.getElementById("osc3-route-to-blue").checked = true;
+
+addOscControls("lfo1");
+// set some things that should be set like this for LFOs
+document.getElementById("lfo1-freq-slider").min = "0.01";
+document.getElementById("lfo1-freq-slider").max = "3";
+// set some nice defaults
+document.getElementById("lfo1-freq-slider").value = "0.5";
+// disable the bits that need disabling for LFOs
+document.getElementById("lfo1-sync").classList.add("disabled");
+document.getElementById("lfo1-sync-choice-h").disabled = true;
+document.getElementById("lfo1-sync-choice-v").disabled = true;
+document.getElementById("lfo1-sync-choice-free").disabled = true;
+document.getElementById("lfo1-pm-slider").disabled = true; // pm is not yet implemented
+document.getElementById("lfo1-fm-slider").disabled = true; // fm is not yet implemented
 
 let osc1ui = new OscillatorUI("osc1");
 let osc2ui = new OscillatorUI("osc2");
