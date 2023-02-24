@@ -312,6 +312,18 @@ class OscillatorUI {
 
 }
 
+function toggleElement(elementToToggle) {
+  elementToToggle.classList.toggle("hidden-element");
+}
+
+const hamburgerButton = document.getElementById("hamburger-button");
+hamburgerButton.addEventListener("click", function(){
+  toggleElement(document.getElementById("controls"))
+});
+hamburgerButton.addEventListener("click", function(){
+  toggleElement(document.getElementById("extra-controls"))
+});
+
 
 const canvas = document.getElementById("screen");
 

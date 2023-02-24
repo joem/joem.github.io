@@ -34,8 +34,12 @@
   margin: 8px;
   font-weight: bold;
 }
-#title span {
+#hamburger-button {
   font-size: x-large;
+}
+
+#extra-controls {
+  margin-left: 1em;
 }
 
 body {
@@ -70,6 +74,7 @@ td {
 .radio.disabled {
   color: lightgray;
 }
+
 .route-to-red {
   background: pink;
 }
@@ -77,6 +82,11 @@ td {
 .route-to-green {
   background: lightgreen;
 }
+
 .route-to-blue {
   background: lightblue;
+}
+
+.hidden-element {
+  display: none;
 }
