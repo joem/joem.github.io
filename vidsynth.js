@@ -317,12 +317,17 @@ function toggleElement(elementToToggle) {
 }
 
 const hamburgerButton = document.getElementById("hamburger-button");
+// hamburgerButton.addEventListener("click", function(){
+//   toggleElement(document.getElementById("controls"))
+// });
+// hamburgerButton.addEventListener("click", function(){
+//   toggleElement(document.getElementById("extra-controls"))
+// });
 hamburgerButton.addEventListener("click", function(){
-  toggleElement(document.getElementById("controls"))
+  toggleElement(document.getElementById("controls"));
+  toggleElement(document.getElementById("extra-controls"));
 });
-hamburgerButton.addEventListener("click", function(){
-  toggleElement(document.getElementById("extra-controls"))
-});
+
 
 
 const canvas = document.getElementById("screen");
