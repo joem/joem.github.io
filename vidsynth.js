@@ -316,21 +316,39 @@ function toggleElement(elementToToggle) {
   elementToToggle.classList.toggle("hidden-element");
 }
 
+
 const hamburgerButton = document.getElementById("hamburger-button");
-// hamburgerButton.addEventListener("click", function(){
-//   toggleElement(document.getElementById("controls"))
-// });
-// hamburgerButton.addEventListener("click", function(){
-//   toggleElement(document.getElementById("extra-controls"))
-// });
 hamburgerButton.addEventListener("click", function(){
   toggleElement(document.getElementById("controls"));
   toggleElement(document.getElementById("extra-controls"));
 });
 
+const addOscillatorButton = document.getElementById("add-source-button");
+addOscillatorButton.addEventListener("click", function(){
+  alert("Not implemented yet.");
+  //TODO: Implement this correctly!
+  // let oscName = prompt('Oscillator name?');
+  //TODO: Ensure name is valid for my uses
+  //      (is filled in, no spaces, doesn't start with number, is unique)
+  //      Or maybe do those checks in addOsc ?
+  // addOsc(oscName); // (not implemented yet)
+});
+
+const helpButton = document.getElementById("help-button");
+helpButton.addEventListener("click", function(){
+  alert("Not implemented yet.");
+  //TODO: Implement this correctly!
+});
+
+const randomButton = document.getElementById("random-button");
+randomButton.addEventListener("click", function(){
+  alert("Not implemented yet.");
+  //TODO: Implement this correctly!
+});
 
 
 const canvas = document.getElementById("screen");
+
 
 addOscControls("osc1");
 // set some nice defaults
