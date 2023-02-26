@@ -60,6 +60,7 @@ td, th {
 
 fieldset {
   display: inline-block;
+  padding-bottom: 2px;
 }
 
 .radio label {
@@ -69,6 +70,10 @@ fieldset {
 
 td {
   text-align: center;
+}
+
+tbody th {
+  text-align: left;
 }
 
 .radio.disabled {
@@ -89,4 +94,25 @@ td {
 
 .hidden-element {
   display: none;
+}
+
+button {
+  margin-right: 4px;
+}
+
+#add-buttons {
+  margin-top: 4px;
+}
+
+#freq-col-header:hover,
+#fm-col-header:hover,
+#phase-col-header:hover,
+#pm-col-header:hover,
+#sync-col-header:hover,
+#routing-col-header:hover {
+  cursor: pointer;
+}
+
+.with-ellipsis:after {
+  content: '...';
 }

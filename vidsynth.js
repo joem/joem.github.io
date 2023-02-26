@@ -101,10 +101,23 @@ function addOscControls(oscName) {
 
   let newCell;
   let newText;
+  let element;
 
   // This three-step process is needed for this first one because it's a `th` not a `td`.
   // There is no `insertCell()` equivalent for `th`.
   let th = document.createElement('th');
+  element = document.createElement('button');
+  element.innerText = "-";
+  element.addEventListener('click', () => {
+    let deleteOsc = confirm("Delete " + oscName + "?");
+    if (deleteOsc) {
+      alert("Not implemented yet.");
+      // let tr = event.target.parentNode.parentNode;
+      // tr.parentNode.removeChild(tr);
+      // removeOscObject(oscName);
+    }
+  })
+  th.appendChild(element);
   th.appendChild(document.createTextNode(oscName));
   newRow.appendChild(th);
 
@@ -115,7 +128,9 @@ function addOscControls(oscName) {
   newCell.appendChild(newSlider(oscName + "-fm-slider"));
 
   newCell = newRow.insertCell();
-  newCell.appendChild(document.createTextNode(oscName + "phase-slider"));
+  element = document.createElement('span');
+  element.appendChild(document.createTextNode(oscName + "phase-slider"));
+  newCell.appendChild(element);
 
   newCell = newRow.insertCell();
   newCell.appendChild(newSlider(oscName + "-pm-slider"));
@@ -345,6 +360,53 @@ randomButton.addEventListener("click", function(){
   alert("Not implemented yet.");
   //TODO: Implement this correctly!
 });
+
+const freqHdr = document.getElementById("freq-col-header");
+freqHdr.addEventListener("click", function(){
+  let elements = document.querySelectorAll("#controls-table tr td:nth-child(2)");
+  for (i = 0; i < elements.length; i++) {
+    elements[i].children[0].classList.toggle("hidden-element");
+  }
+  freqHdr.classList.toggle("with-ellipsis");
+});
+
+const fmHdr = document.getElementById("fm-col-header");
+fmHdr.addEventListener("click", function(){
+  let elements = document.querySelectorAll("#controls-table tr td:nth-child(3)");
+  for (i = 0; i < elements.length; i++) {
+    elements[i].children[0].classList.toggle("hidden-element");
+  }
+  fmHdr.classList.toggle("with-ellipsis");
+});
+
+const phaseHdr = document.getElementById("phase-col-header");
+phaseHdr.addEventListener("click", function(){
+  let elements = document.querySelectorAll("#controls-table tr td:nth-child(4)");
+  for (i = 0; i < elements.length; i++) {
+    elements[i].children[0].classList.toggle("hidden-element");
+  }
+  phaseHdr.classList.toggle("with-ellipsis");
+});
+
+
+const pmHdr = document.getElementById("pm-col-header");
+pmHdr.addEventListener("click", function(){
+  let elements = document.querySelectorAll("#controls-table tr td:nth-child(5)");
+  for (i = 0; i < elements.length; i++) {
+    elements[i].children[0].classList.toggle("hidden-element");
+  }
+  pmHdr.classList.toggle("with-ellipsis");
+});
+
+const syncHdr = document.getElementById("sync-col-header");
+syncHdr.addEventListener("click", function(){
+  let elements = document.querySelectorAll("#controls-table tr td:nth-child(6)");
+  for (i = 0; i < elements.length; i++) {
+    elements[i].children[0].classList.toggle("hidden-element");
+  }
+  syncHdr.classList.toggle("with-ellipsis");
+});
+
 
 
 const canvas = document.getElementById("screen");

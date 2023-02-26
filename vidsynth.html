@@ -27,13 +27,13 @@
       <table id="controls-table">
         <thead>
           <tr>
-            <th rowspan="2">Source<br><button id="add-source-button">+</button></th>
-            <th rowspan="2">Freq.</th>
-            <th rowspan="2">FM</th>
-            <th rowspan="2">Phase</th>
-            <th rowspan="2">PM</th>
-            <th rowspan="2">Sync</th>
-            <th colspan="9">Routing</th>
+            <th rowspan="2" id="source-col-header">Source<br><button id="add-source-button">+</button></th>
+            <th rowspan="2" id="freq-col-header">Freq.</th>
+            <th rowspan="2" id="fm-col-header">FM</th>
+            <th rowspan="2" id="phase-col-header">Phase</th>
+            <th rowspan="2" id="pm-col-header">PM</th>
+            <th rowspan="2" id="sync-col-header">Sync</th>
+            <th colspan="9" id="routing-col-header">Routing</th>
           </tr>
           <tr>
             <th>R</th>
@@ -51,6 +51,11 @@
           <!-- controls will be added here to the tbody programatically -->
         </tbody>
       </table>
+      <div id="add-buttons">
+        <button id="add-vco-button">Add VCO</button> 
+        <button id="add-ramp-button">Add Ramp</button> 
+        <button id="add-lfo-button">Add LFO</button>
+      </div>
     </fieldset>
 
   </div>
